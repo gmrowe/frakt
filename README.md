@@ -2,7 +2,7 @@
 
 frakt will explore fractal patterns using various generation techniques.
 Currently frakt only implements the algorithm descibed here:
-[The Chaos Game](https://orgmode.org/guide/Hyperlinks.html)
+[The Chaos Game](https://beltoforion.de/en/recreational_mathematics/chaos_game.php#idStart)
   1. Start with a triangle with vertices v0, v1, v2
   2. Choose a random point within the triangle p
   3. Choose a random vertice v∈{v0, v1, v2}
@@ -27,9 +27,9 @@ Currently frakt only implements the algorithm descibed here:
 
 Run using the clojure cli tool:
 
-    ```sh
-	clj -X frakt.core/main && feh frakt-core.ppm
-	```
+   ```sh
+   clj -X frakt.core/main && feh frakt-core.ppm
+   ```
 
 ## Related Projects
 
