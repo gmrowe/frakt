@@ -1,6 +1,7 @@
 (ns frakt.canvas
   (:require [clojure.string :as s]
-            [frakt.color :as color]))
+            [frakt.color :as color]
+            [clojure.math :as math]))
 
 (defn canvas
   ([w h] (canvas w h color/black))
@@ -16,6 +17,46 @@
       (let [index (+ (* width y) x)]
         (assoc-in canvas [:canvas/pixels index] color))
       canvas)))
+
+;; y = mx + b
+(defn- draw-line-low
+  [canvas x0 y0 x1 y1 color]
+  (let [start (min x0 x1)
+        end (inc (max x0 x1))
+        m (/ (- y0 y1) (- x0 x1))
+        ;; y = mx + b => b = y - mx
+        b (- y0 (* m x0))]
+    (reduce (fn [c x] (write-pixel c x (math/round (+ b (* m x))) color))
+      canvas
+      (range start end))))
+
+;; x = (y - b) / m
+(defn- draw-line-high
+  [canvas x0 y0 x1 y1 color]
+  (let [start (min y0 y1)
+        end (inc (max y0 y1))
+        m (/ (- y0 y1) (- x0 x1))
+        ;; y = mx + b => b = y - mx
+        b (- y0 (* m x0))]
+    (reduce (fn [c y] (write-pixel c (math/round (/ (- y b) m)) y color))
+      canvas
+      (range start end))))
+
+(defn- draw-line-vert
+  [canvas x y0 y1 color]
+  (let [start (min y0 y1)
+        end (inc (max y0 y1))]
+    (reduce (fn [c y] (write-pixel c x y color)) canvas (range start end))))
+
+;; m = (y0 - y1) / (x0 - x1)
+(defn draw-line
+  [canvas x0 y0 x1 y1 color]
+  (let [dx (- x0 x1)
+        dy (- y0 y1)]
+    (cond (zero? dx) (draw-line-vert canvas x0 y0 y1 color)
+          (>= (abs dx) (abs dy)) (draw-line-low canvas x0 y0 x1 y1 color)
+          :else (draw-line-high canvas x0 y0 x1 y1 color))))
+
 
 (defn pixel-at
   [canvas x y]
