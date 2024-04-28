@@ -26,11 +26,19 @@ Currently frakt only implements the algorithm descibed here:
 
 ## Usage
 
-Run using the clojure cli tool:
+Examples may be run using the clojure cli tool. All examplese should include
+a main function. To run the sierpinski.clj example type:
 
    ```sh
-   clj -X frakt.core/main && feh frakt-core.ppm
+   clj -X frakt.sierpinski/main
    ```
+
+A file will be generated in the root directory called `sierpinski.ppm`. Open
+this file in feh using:
+
+    ```sh
+	feh sierpinski.ppm
+	```
 
 ## Related Projects
 
